@@ -26,24 +26,31 @@
       </div>
     </div>
     <div v-show="threeDemo">
-      <Renderer>
-      <Camera :position="{ z: 50 }" />
-      <Scene>
-        <PointLight :position="{ y: 50, z: 50 }" />
-        <Box>
-          <LambertMaterial />
-        </Box>
-      </Scene>
+      <h1>This is created using ThreeJS!</h1> 
+      <Renderer width=650 height=650 :orbitCtrl=true>
+        <Camera :position="{z: 5}"/>
+        <Scene background="#150050">
+          <Mesh>
+            <BoxGeometry :width=width :height=height :depth=depth />
+            <BasicMaterial color="#bfd8b8"/>
+          </Mesh>
+        </Scene> 
       </Renderer>
+      <div id="box-dimensions">
+        <span>Height</span><Slider v-model="height" :min=1 :max=5 />
+        <span>Width</span><Slider v-model="width" :min=1 :max=5 />
+        <span>Depth</span><Slider v-model="depth" :min=1 :max=5 />
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Box, Camera, LambertMaterial, PointLight, Renderer, Scene } from 'troisjs';
+import { Renderer, Scene, Camera, BoxGeometry, Mesh, BasicMaterial, } from 'troisjs';
+import Slider from '@vueform/slider'
 export default {
   name: 'App',
-  components: { Box, Camera, LambertMaterial, PointLight, Renderer, Scene },
+  components: { Renderer, Scene, Camera, BoxGeometry, Mesh, BasicMaterial, Slider, },
   data() {
     return {
       vueDemo: true,
@@ -52,6 +59,9 @@ export default {
       message: "",
       todo: "",
       todos: [],
+      width: 2,
+      height: 2,
+      depth: 2,
     }
   },
   methods: {
@@ -122,4 +132,16 @@ ol {
   width: 30%;
   margin: auto;
 }
+
+#box-dimensions {
+  margin: auto;
+  margin-top: 2%;
+  width: 30%;
+}
+
+#box-dimensions span {
+  margin: 5%;
+}
+
 </style>
+<style src="@vueform/slider/themes/default.css"></style>
