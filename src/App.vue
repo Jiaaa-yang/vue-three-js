@@ -27,30 +27,42 @@
     </div>
     <div v-show="threeDemo">
       <h1>This is created using ThreeJS!</h1> 
+      <div>
+        <select v-model="geometry">
+          <option disabled value="">Geometry Type</option>
+          <option>Box</option>
+          <option>Sphere</option>
+        </select>
+      </div>
       <Renderer width=650 height=650 :orbitCtrl=true>
         <Camera :position="{z: 5}"/>
         <Scene background="#150050">
+          <PointLight :position="{x: 4, y: 5, z: 5}" />
           <Mesh>
-            <BoxGeometry :width=width :height=height :depth=depth />
-            <BasicMaterial color="#bfd8b8"/>
+            <BoxGeometry v-if="geometry == 'Box'" :width=width :height=height :depth=depth />
+            <SphereGeometry v-if="geometry == 'Sphere'" :radius=radius :widthSegments=64 :heightSegments=64 />
+            <StandardMaterial color="#bfd8b8"/>
           </Mesh>
         </Scene> 
       </Renderer>
-      <div id="box-dimensions">
+      <div v-show="geometry == 'Box'" id="box-dimensions">
         <span>Height</span><Slider v-model="height" :min=1 :max=5 />
         <span>Width</span><Slider v-model="width" :min=1 :max=5 />
         <span>Depth</span><Slider v-model="depth" :min=1 :max=5 />
+      </div>
+      <div v-show="geometry == 'Sphere'" id="box-dimensions">
+        <span>Radius</span><Slider v-model="radius" :min=1 :max=3 />
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { Renderer, Scene, Camera, BoxGeometry, Mesh, BasicMaterial, } from 'troisjs';
+import { Renderer, Scene, Camera, BoxGeometry, Mesh, StandardMaterial, PointLight, SphereGeometry, } from 'troisjs';
 import Slider from '@vueform/slider'
 export default {
   name: 'App',
-  components: { Renderer, Scene, Camera, BoxGeometry, Mesh, BasicMaterial, Slider, },
+  components: { Renderer, Scene, Camera, BoxGeometry, Mesh, StandardMaterial, Slider, PointLight, SphereGeometry, },
   data() {
     return {
       vueDemo: true,
@@ -62,6 +74,8 @@ export default {
       width: 2,
       height: 2,
       depth: 2,
+      radius: 1,
+      geometry: "",
     }
   },
   methods: {
@@ -141,6 +155,10 @@ ol {
 
 #box-dimensions span {
   margin: 5%;
+}
+
+select {
+  margin: 1%;
 }
 
 </style>
