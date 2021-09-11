@@ -6,6 +6,7 @@
     </ul>
   </header>
   <div id="content">
+    <!-- Demonstration of VueJS functionalities -->
     <div v-show="vueDemo">
       <h1>These are some functionalities implemented with Vue!</h1>
       <div class="container">
@@ -25,6 +26,7 @@
         <button @click="addTodo">Add Task</button>
       </div>
     </div>
+    <!-- Demonstration of ThreeJS functionalities -->
     <div v-show="threeDemo">
       <h1>This is created using ThreeJS!</h1> 
       <div>
@@ -34,23 +36,24 @@
           <option>Sphere</option>
         </select>
       </div>
+      <!-- ThreeJS components imported using 'troisjs' library -->
       <Renderer width=650 height=650 :orbitCtrl=true>
-        <Camera :position="{z: 5}"/>
+        <Camera :position="{z: 10}"/>
         <Scene background="#150050">
           <PointLight :position="{x: 4, y: 5, z: 5}" />
           <Mesh>
-            <BoxGeometry v-if="geometry == 'Box'" :width=width :height=height :depth=depth />
-            <SphereGeometry v-if="geometry == 'Sphere'" :radius=radius :widthSegments=64 :heightSegments=64 />
+            <BoxGeometry v-if="showBox" :width=width :height=height :depth=depth />
+            <SphereGeometry v-if="showSphere" :radius=radius :widthSegments=64 :heightSegments=64 />
             <StandardMaterial color="#bfd8b8"/>
           </Mesh>
         </Scene> 
       </Renderer>
-      <div v-show="geometry == 'Box'" id="box-dimensions">
+      <div v-show="showBox" id="box-dimensions">
         <span>Height</span><Slider v-model="height" :min=1 :max=5 />
         <span>Width</span><Slider v-model="width" :min=1 :max=5 />
         <span>Depth</span><Slider v-model="depth" :min=1 :max=5 />
       </div>
-      <div v-show="geometry == 'Sphere'" id="box-dimensions">
+      <div v-show="showSphere" id="box-dimensions">
         <span>Radius</span><Slider v-model="radius" :min=1 :max=3 />
       </div>
     </div>
@@ -58,11 +61,12 @@
 </template>
 
 <script>
-import { Renderer, Scene, Camera, BoxGeometry, Mesh, StandardMaterial, PointLight, SphereGeometry, } from 'troisjs';
+import { Renderer, Scene, Camera, BoxGeometry, Mesh, StandardMaterial, PointLight, SphereGeometry } from 'troisjs';
 import Slider from '@vueform/slider'
+
 export default {
   name: 'App',
-  components: { Renderer, Scene, Camera, BoxGeometry, Mesh, StandardMaterial, Slider, PointLight, SphereGeometry, },
+  components: { Renderer, Scene, Camera, BoxGeometry, Mesh, StandardMaterial, PointLight, SphereGeometry, Slider },
   data() {
     return {
       vueDemo: true,
@@ -75,7 +79,15 @@ export default {
       height: 2,
       depth: 2,
       radius: 1,
-      geometry: "",
+      geometry: ""
+    }
+  },
+  computed: {
+    showBox() {
+      return this.geometry == 'Box'
+    },
+    showSphere() {
+      return this.geometry == 'Sphere'
     }
   },
   methods: {
@@ -99,36 +111,11 @@ export default {
 }
 </script>
 
+<style src="@vueform/slider/themes/default.css"></style>
 <style>
+/* General */
 body {
   background-color: lavender;
-}
-
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-#navbar li {
-  padding: 0 3rem;
-  display: inline;
-}
-
-#navbar a {
-  font-size: 1.5rem;
-  text-decoration: none;
-}
-
-.container {
-  background-color: #ffb6c1;
-  padding: 4%;
-  margin: 2% 6%;
-  border-radius: 6px;
-  font-size: 1.5rem;
 }
 
 button {
@@ -147,19 +134,48 @@ ol {
   margin: auto;
 }
 
+select {
+  margin: 1%;
+}
+
+/* Default styling for app */
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin-top: 60px;
+}
+
+/* Navbar */
+#navbar li {
+  padding: 0 3rem;
+  display: inline;
+}
+
+#navbar a {
+  font-size: 1.5rem;
+  text-decoration: none;
+}
+
+/* Content */
+.container {
+  background-color: #ffb6c1;
+  padding: 4%;
+  margin: 2% 6%;
+  border-radius: 6px;
+  font-size: 1.5rem;
+}
+
 #box-dimensions {
   margin: auto;
   margin-top: 2%;
+  margin-bottom: 2%;
   width: 30%;
 }
 
 #box-dimensions span {
   margin: 5%;
 }
-
-select {
-  margin: 1%;
-}
-
 </style>
-<style src="@vueform/slider/themes/default.css"></style>

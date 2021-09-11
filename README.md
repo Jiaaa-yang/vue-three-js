@@ -1,6 +1,6 @@
-# VueJS and ThreeJS project
+# VueThreeJS
 
-A simple project to learn the basics of the two frameworks
+A simple project to learn the basics of VueJS and ThreeJS
 
 ## VueJS
 
@@ -9,3 +9,20 @@ A simple project to learn the basics of the two frameworks
 * Simple list rendering using v-for: TODO List
 
 ![vue demo](demo/vue_demo.gif)
+
+## ThreeJS
+
+* Renderer and camera with orbit control 
+* Box and Sphere geometry with customisable dimensions
+* Point lighting for clearer 3D effect
+
+![sphere demo](demo/Sphere.gif)
+
+![box demo](demo/Box.gif)
+
+# Setting Up
+Clone the repository and install `Node.js`. Then run:
+```
+npm install
+npm run serve
+```
