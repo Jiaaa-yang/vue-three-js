@@ -3,6 +3,7 @@
     <ul>
       <li><a href="" @click.prevent="showVue">VueJs</a></li>
       <li><a href="" @click.prevent="showThree">ThreeJS</a></li>
+      <li><a href="" @click.prevent="showGame">Game</a></li>
     </ul>
   </header>
   <div id="content">
@@ -57,20 +58,30 @@
         <span>Radius</span><Slider v-model="radius" :min=1 :max=3 />
       </div>
     </div>
+    <div v-show="gameDemo">
+      <h1>Reaction Timer Game</h1>
+      <button @click="startGame" :disabled="!isInitial">Start</button>
+      <Block :isWaiting="isWaiting" :isInitial="isInitial" :isActive="isActive" />
+    </div>
   </div>
 </template>
 
 <script>
+const MIN_TIME = 2000;
+const MAX_TIME = 5000;
+
+import Block from "./components/Block.vue";
 import { Renderer, Scene, Camera, BoxGeometry, Mesh, StandardMaterial, PointLight, SphereGeometry } from 'troisjs';
 import Slider from '@vueform/slider'
 
 export default {
   name: 'App',
-  components: { Renderer, Scene, Camera, BoxGeometry, Mesh, StandardMaterial, PointLight, SphereGeometry, Slider },
+  components: { Renderer, Scene, Camera, BoxGeometry, Mesh, StandardMaterial, PointLight, SphereGeometry, Block, Slider },
   data() {
     return {
       vueDemo: true,
       threeDemo: false,
+      gameDemo: false,
       count: 0,
       message: "",
       todo: "",
@@ -79,7 +90,10 @@ export default {
       height: 2,
       depth: 2,
       radius: 1,
-      geometry: ""
+      geometry: "",
+      isInitial: true,
+      isWaiting: false,
+      isActive: false,
     }
   },
   computed: {
@@ -99,13 +113,29 @@ export default {
         this.todos.push(this.todo)
       }
     },
+    startGame() {
+      this.isInitial = false;
+      this.isWaiting = true;
+      var delay = MIN_TIME + Math.random() * MAX_TIME
+      setTimeout(() => {
+        this.isActive = true;
+        this.isWaiting = false;
+      }, delay)
+    },
     showVue() {
       this.vueDemo = true
       this.threeDemo = false
+      this.gameDemo = false
     },
     showThree() {
       this.threeDemo = true
       this.vueDemo = false
+      this.gameDemo = false
+    },
+    showGame() {
+      this.gameDemo = true
+      this.vueDemo = false
+      this.threeDemo = false
     }
   }
 }
